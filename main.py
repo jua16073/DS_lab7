@@ -11,7 +11,7 @@ auth = tw.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tw.API(auth, wait_on_rate_limit=True)
 
-search_words = "#temblor"
+search_words = "#temblorgt"
 date_since = "2019-6-1"
 
 tweets = tw.Cursor(
@@ -25,3 +25,7 @@ tweets = tw.Cursor(
 for tweet in tweets:
   print(tweet.text)
   print("////////////////////////")
+
+tweets.tolower()
+tweets.strip("#%s")
+tweets.strip('@%s')
