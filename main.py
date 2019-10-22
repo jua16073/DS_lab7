@@ -3,8 +3,9 @@ import tweepy as tw
 import pandas as pd
 import re
 import nltk
+import csv
+#nltk.download('stopwords')
 from nltk.corpus import stopwords
-
 stop_words = set(stopwords.words('spanish'))
 
 consumer_key = 'tVXKlrYZ0XtJRhhvMKTIxvuxZ' 
@@ -17,14 +18,15 @@ auth.set_access_token(access_token, access_token_secret)
 api = tw.API(auth, wait_on_rate_limit=True)
 
 search_words = "#temblorgt"
-date_since = "2019-6-1"
+date_since = "2015-6-1"
 
 tweets = tw.Cursor(
   api.search,
   q = search_words,
+  count = 100,
   lang = "es",
   since = date_since
-).pages(1000)
+).pages(100000)
 
 new_data = []
 
@@ -56,3 +58,12 @@ file = open('data.txt', "w+")
 for t in strings:
   file.write(t + ';')
 file.close()
+
+csvFile = open('ua.csv', 'a')
+#Use csv Writer
+csvWriter = csv.writer(csvFile)
+for tweet in tw.Cursor(api.search,q="#temblorgt",count=100,
+                           lang="es",
+                           since="2017-04-03").items(10000):
+    print (tweet.created_at, tweet.text)
+    csvWriter.writerow([tweet.created_at, tweet.text.encode('utf-8')])
